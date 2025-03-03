@@ -1,4 +1,8 @@
 -- Danh mục
+CREATE DATABASE Watch_Store
+GO
+USE Watch_Store
+GO
 CREATE TABLE phan_loai (
     id INT PRIMARY KEY IDENTITY(1,1),
     phan_loai NVARCHAR(255),
@@ -23,9 +27,9 @@ CREATE TABLE hang_dong_ho (
     trang_thai INT
 );
 
-CREATE TABLE thuong_hieu (
+CREATE TABLE xuat_xu (
     id INT PRIMARY KEY IDENTITY(1,1),
-    ten_thuong_hieu NVARCHAR(255),
+    ten_xuat_xu NVARCHAR(255),
     trang_thai INT
 );
 
@@ -42,16 +46,18 @@ CREATE TABLE dong_ho_chi_tiet (
     id INT PRIMARY KEY IDENTITY(1,1),
     id_dong_ho INT,
     id_phan_loai INT,
-    id_thuong_hieu INT,
+    id_loai INT,
     id_hang_dong_ho INT,
+	id_xuat_xu INT, 
     id_chat_lieu INT,
     trang_thai INT,
     gia_tien DECIMAL(10,2),
     gioi_tinh INT,
     chuc_nang NVARCHAR(255),
     FOREIGN KEY (id_dong_ho) REFERENCES dong_ho(id),
+	    FOREIGN KEY (id_loai) REFERENCES loai_dong_ho(id),
     FOREIGN KEY (id_phan_loai) REFERENCES phan_loai(id),
-    FOREIGN KEY (id_thuong_hieu) REFERENCES thuong_hieu(id),
+    FOREIGN KEY (id_xuat_xu) REFERENCES xuat_xu(id),
     FOREIGN KEY (id_hang_dong_ho) REFERENCES hang_dong_ho(id),
     FOREIGN KEY (id_chat_lieu) REFERENCES chat_lieu(id)
 );
@@ -135,7 +141,37 @@ CREATE TABLE phieu_giam_gia_chi_tiet (
     FOREIGN KEY (id_khach_hang) REFERENCES Khach_Hang(id),
     FOREIGN KEY (id_phieu_giam_gia) REFERENCES phieu_giam_gia(id)
 );
+CREATE TABLE gio_hang (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    id_khach_hang INT,
+    ma VARCHAR(50) UNIQUE,
+    ngay_tao DATETIME DEFAULT CURRENT_TIMESTAMP,
+    trang_thai INT,
+    FOREIGN KEY (id_khach_hang) REFERENCES Khach_Hang(id)
+);
 
+CREATE TABLE gio_hang_chi_tiet (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    id_gio_hang INT,
+    id_dong_ho_chi_tiet INT,
+    so_luong INT NOT NULL,
+    gia_tien DECIMAL(10,2) NOT NULL,
+    trang_thai INT,
+    ngay_tao DATE DEFAULT CURRENT_TIMESTAMP,
+    ngay_sua DATE,
+    thoi_gian_voucher DATETIME,
+    FOREIGN KEY (id_gio_hang) REFERENCES gio_hang(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_dong_ho_chi_tiet) REFERENCES dong_ho_chi_tiet(id)
+);
+
+CREATE TABLE hinh_thuc_thanh_toan (
+    id INT PRIMARY KEY IDENTITY(1,1),
+    id_hoa_don_chi_tiet INT,
+    hinh_thuc_thanh_toan VARCHAR(100) NOT NULL,
+    so_tien DECIMAL(10,2) NOT NULL,
+    trang_thai INT,
+    FOREIGN KEY (id_hoa_don_chi_tiet) REFERENCES hoa_don_chi_tiet(id)
+);
 -- Hệ thống quyền
 CREATE TABLE role (
     id INT PRIMARY KEY IDENTITY(1,1),
