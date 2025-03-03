@@ -37,7 +37,7 @@ CREATE TABLE xuat_xu (
 CREATE TABLE dong_ho (
     id INT PRIMARY KEY IDENTITY(1,1),
     ten_dong_ho NVARCHAR(255),
-    dia_chi NVARCHAR(255),
+    mo_ta NVARCHAR(255),
     trang_thai INT,
     hinh_anh VARCHAR(255)
 );
@@ -55,7 +55,7 @@ CREATE TABLE dong_ho_chi_tiet (
     gioi_tinh INT,
     chuc_nang NVARCHAR(255),
     FOREIGN KEY (id_dong_ho) REFERENCES dong_ho(id),
-	    FOREIGN KEY (id_loai) REFERENCES loai_dong_ho(id),
+	FOREIGN KEY (id_loai) REFERENCES loai_dong_ho(id),
     FOREIGN KEY (id_phan_loai) REFERENCES phan_loai(id),
     FOREIGN KEY (id_xuat_xu) REFERENCES xuat_xu(id),
     FOREIGN KEY (id_hang_dong_ho) REFERENCES hang_dong_ho(id),
