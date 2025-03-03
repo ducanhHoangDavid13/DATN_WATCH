@@ -14,6 +14,6 @@ import sd_19.watch.model.CommonEntity;
 @NoArgsConstructor
 public class DongHo extends CommonEntity {
    @Column private String tenDongHo;
-  @Column private String diaChi;
+  @Column private String moTa;
    @Column private String hinhAnh;
 }
