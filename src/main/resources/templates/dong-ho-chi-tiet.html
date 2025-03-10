@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Đồng Hồ Chi Tiết</title>
+    <head th:replace="thu-vien/navbar :: header"></head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/dongho.css}">
+
+</head>
+<body>
+<!--<div th:replace="~{thu-vien/navbar :: header}"></div>&ndash;&gt;-->
+<!--<div class="d-flex">-->
+<!--    <div th:replace="~{thu-vien/navbar :: navbar}"></div>-->
+<!--</div>-->
+<!-- Navbar -->
+<div th:replace="~{thu-vien/navbar :: header}"></div>
+<div class="d-flex">
+    <div th:replace="~{thu-vien/navbar :: navbar}"></div>
+</div>
+
+<!-- Tiêu đề -->
+<h1>Danh sách Đồng Hồ Chi Tiết</h1>
+
+<!-- Nút thêm mới -->
+<button id="openAddModal">Thêm mới</button>
+
+<!-- Form tìm kiếm -->
+<form id="searchForm">
+    <input type="text" name="tenDongHo" placeholder="Tên đồng hồ">
+    <input type="text" name="hang" placeholder="Hãng">
+    <input type="text" name="phanLoai" placeholder="Phân loại">
+    <input type="text" name="chatLieu" placeholder="Chất liệu">
+    <input type="text" name="xuatXu" placeholder="Xuất xứ">
+    <button type="submit">Tìm kiếm</button>
+</form>
+
+<!-- Bảng danh sách đồng hồ -->
+<div id="dongHoPanel">
+    <h2>Đồng Hồ Chi Tiết</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th> <th>Tên đồng hồ</th> <th>Hãng</th> <th>Phân loại</th>
+            <th>Chất liệu</th> <th>Xuất xứ</th> <th>Giới tính</th> <th>Giá tiền</th>
+            <th>Số Serial</th> <th>Trạng thái</th> <th>Hình ảnh</th> <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="dongHo : ${listDongHo}">
+            <td th:text="${dongHo.id}"></td>
+            <td th:text="${dongHo.tenDongHo}"></td>
+            <td th:text="${dongHo.hang.ten}"></td>
+            <td th:text="${dongHo.phanLoai.ten}"></td>
+            <td th:text="${dongHo.chatLieu.ten}"></td>
+            <td th:text="${dongHo.xuatXu.ten}"></td>
+            <td th:text="${dongHo.gioiTinh}"></td>
+            <td th:text="${dongHo.giaTien}"></td>
+            <td th:text="${dongHo.soSerial}"></td>
+            <td th:text="${dongHo.trangThai == 1 ? 'Hoạt động' : 'Không hoạt động'}"></td>
+            <td><img th:src="${dongHo.hinhAnh}" width="50" height="50"></td>
+            <td>
+                <button class="edit-btn" th:attr="data-id=${dongHo.id}">Sửa</button>
+                <button class="delete-btn" th:attr="data-id=${dongHo.id}">Xóa</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Form -->
+<div id="modalOverlay">
+    <div id="modalForm">
+        <h2>Thêm/Sửa Đồng Hồ</h2>
+        <form id="dongHoForm">
+            <input type="hidden" id="id" name="id">
+            <label>Tên đồng hồ:</label>
+            <input type="text" id="tenDongHo" name="tenDongHo">
+            <label>Hãng:</label>
+            <select id="hang" name="hang">
+                <option th:each="hang : ${listHang}" th:value="${hang.id}" th:text="${hang.ten}"></option>
+            </select>
+            <label>Phân loại:</label>
+            <select id="phanLoai" name="phanLoai">
+                <option th:each="phanLoai : ${listPhanLoai}" th:value="${phanLoai.id}" th:text="${phanLoai.ten}"></option>
+            </select>
+            <label>Chất liệu:</label>
+            <select id="chatLieu" name="chatLieu">
+                <option th:each="chatLieu : ${listChatLieu}" th:value="${chatLieu.id}" th:text="${chatLieu.ten}"></option>
+            </select>
+            <label>Xuất xứ:</label>
+            <select id="xuatXu" name="xuatXu">
+                <option th:each="xuatXu : ${listXuatXu}" th:value="${xuatXu.id}" th:text="${xuatXu.ten}"></option>
+            </select>
+            <label>Giá tiền:</label>
+            <input type="number" id="giaTien" name="giaTien">
+            <label>Giới tính:</label>
+            <select id="gioiTinh" name="gioiTinh">
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+                <option value="Unisex">Unisex</option>
+            </select>
+            <label>Số Serial:</label>
+            <input type="text" id="soSerial" name="soSerial">
+            <label>Trạng thái:</label>
+            <select id="trangThai" name="trangThai">
+                <option value="1">Hoạt động</option>
+                <option value="0">Không hoạt động</option>
+            </select>
+            <label>Hình ảnh :</label>
+            <input type="text" id="hinhAnh" name="hinhAnh">
+            <button type="submit">Lưu</button>
+            <button type="button" id="closeModal">Đóng</button>
+        </form>
+    </div>
+</div>
+
+<!-- Script xử lý -->
+<script>
+    $(document).ready(function() {
+        // Tìm kiếm
+        $('#searchForm').submit(function(event) {
+            event.preventDefault();
+            window.location.href = '/dongho-chitiet?' + $(this).serialize();
+        });
+
+        // Xóa
+        $('.delete-btn').click(function() {
+            if (confirm('Bạn có chắc muốn xóa?')) {
+                $.ajax({
+                    url: '/dongho-chitiet/delete/' + $(this).data('id'),
+                    type: 'DELETE',
+                    success: function() { location.reload(); }
+                });
+            }
+        });
+
+        // Hiển thị modal thêm/sửa
+        $('#openAddModal').click(() => $('#modalOverlay').fadeIn());
+        $('#closeModal').click(() => $('#modalOverlay').fadeOut());
+
+        // Xử lý chỉnh sửa
+        $('.edit-btn').click(function() {
+            $.get('/dongho-chitiet/edit/' + $(this).data('id'), function(data) {
+                Object.keys(data).forEach(key => $('#' + key).val(data[key]));
+                $('#modalOverlay').fadeIn();
+            });
+        });
+
+        // Lưu
+        $('#dongHoForm').submit(function(event) {
+            event.preventDefault();
+            $.post('/dongho-chitiet/save', $(this).serialize(), function() {
+                $('#modalOverlay').fadeOut();
+                location.reload();
+            });
+        });
+    });
+</script>
+<div th:insert="fragments/footer :: footer"></div>
+</body>
+</html>
