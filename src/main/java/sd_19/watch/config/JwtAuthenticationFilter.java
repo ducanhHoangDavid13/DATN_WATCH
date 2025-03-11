@@ -27,8 +27,7 @@ public class JwtAuthenticationFilter {
         return new BCryptPasswordEncoder();
     }
         @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String header = request.getHeader("Authorization");
         String username = null;
         String jwt = null;
