@@ -20,5 +20,6 @@ public class XuatXu extends CommonEntity {
     private String maXuatXu;
     @Column
     @NotNull(message = "Xuất xứ không được để trống")
-    private String tenXuatXu;
+    private String loaiXuatXu;
+
 }

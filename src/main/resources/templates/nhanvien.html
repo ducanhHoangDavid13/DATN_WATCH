@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quản Lý Nhân Viên</title>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .hidden { display: none; }
+        .container { width: 80%; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .btn { padding: 5px 10px; text-decoration: none; margin-right: 5px; }
+        .btn-edit { background: #ffc107; color: black; }
+        .btn-delete { background: #dc3545; color: white; }
+        .btn-add { background: #28a745; color: white; display: inline-block; margin: 10px 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Quản Lý Nhân Viên</h2>
+
+    <!-- Danh sách nhân viên -->
+    <div th:if="${mode == 'list'}">
+        <a href="/nhanvien/add" class="btn btn-add">Thêm Nhân Viên</a>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Mã NV</th>
+                <th>Tên NV</th>
+                <th>Email</th>
+                <th>Giới Tính</th>
+                <th>Số ĐT</th>
+                <th>Địa Chỉ</th>
+                <th>Hành Động</th>
+            </tr>
+            <tr th:each="nv : ${nhanViens}">
+                <td th:text="${nv.id}"></td>
+                <td th:text="${nv.maNhanVien}"></td>
+                <td th:text="${nv.tenNhanVien}"></td>
+                <td th:text="${nv.email}"></td>
+                <td th:text="${nv.gioiTinh ? 'Nam' : 'Nữ'}"></td>
+                <td th:text="${nv.sdt}"></td>
+                <td th:text="${nv.diaChi}"></td>
+                <td>
+                    <a th:href="@{/nhanvien/edit/{id}(id=${nv.id})}" class="btn btn-edit">Sửa</a>
+                    <a th:href="@{/nhanvien/delete/{id}(id=${nv.id})}" class="btn btn-delete"
+                       onclick="return confirm('Xóa nhân viên này?')">Xóa</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Form thêm hoặc chỉnh sửa nhân viên -->
+    <div th:if="${mode == 'add' or mode == 'edit'}">
+        <h3 th:text="${mode == 'add' ? 'Thêm Nhân Viên' : 'Chỉnh Sửa Nhân Viên'}"></h3>
+        <form th:action="@{${mode == 'add' ? '/nhanvien/save' : '/nhanvien/update/' + nhanVien.id}}"
+              th:object="${nhanVien}" method="post">
+            <label>Mã NV:</label>
+            <input type="text" th:field="*{maNhanVien}" required /><br/>
+
+            <label>Tên NV:</label>
+            <input type="text" th:field="*{tenNhanVien}" required /><br/>
+
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" required /><br/>
+
+            <label>Giới Tính:</label>
+            <select th:field="*{gioiTinh}">
+                <option value="true">Nam</option>
+                <option value="false">Nữ</option>
+            </select><br/>
+
+            <label>Số ĐT:</label>
+            <input type="text" th:field="*{sdt}" required /><br/>
+
+            <label>Địa Chỉ:</label>
+            <input type="text" th:field="*{diaChi}" required /><br/>
+
+            <button type="submit">Lưu</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

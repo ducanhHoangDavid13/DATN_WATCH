@@ -8,15 +8,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import sd_19.watch.model.CommonEntity;
-@Data
+
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "loai_dong_ho")
 public class LoaiDongHo extends CommonEntity {
     @NotBlank(message = "Mã loại đồng hồ không được để trống")
     @Column(name = "ma", nullable = false, unique = true)
     private String maLoai;
-@Column
-private String tenLoai;
+    @Column(name="ten_loai")
+    @NotBlank(message = "Tên loại đồng hồ không được để trống")
+    private String tenLoai;
 }

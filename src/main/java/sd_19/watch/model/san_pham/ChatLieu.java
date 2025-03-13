@@ -3,8 +3,7 @@ package sd_19.watch.model.san_pham;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +20,8 @@ public class ChatLieu extends CommonEntity {
     @Column(name = "ma", nullable = false, unique = true)
     private String maChatLieu;
     @Column
-    @NotEmpty(message = "Khong duoc de trong chat lieu!")
-    private String tenChatLieu;
+    @NotEmpty(message = "Khong duoc de trong loai chat lieu!")
+    private String loaiChatLieu;
+
+
 }

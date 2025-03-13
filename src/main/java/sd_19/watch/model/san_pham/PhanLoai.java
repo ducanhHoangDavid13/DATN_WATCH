@@ -17,6 +17,9 @@ public class PhanLoai extends CommonEntity {
     @NotBlank(message = "Mã phân loại không được để trống")
     @Column(name = "ma", nullable = false, unique = true)
     private String maPhanLoai;
-    @Column
-   private String tenPhanLoai;
+    @NotBlank(message = "Phân loại không được để trống")
+    @Column(name = "phan_loai")
+    private String tenPhanLoai;
+
+
 }

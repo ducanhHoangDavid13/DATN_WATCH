@@ -16,7 +16,8 @@ public class HangDongHo extends CommonEntity {
     @NotBlank(message = "Mã hãng đồng hồ không được để trống")
     @Column(name = "ma", nullable = false, unique = true)
     private String maHang;
-    @Column
+    @Column(name="ten_hang")
+    @NotBlank(message = "Tên hãng đồng hồ không được để trống")
     private String tenHang;
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/dong-ho-chi-tiet")
 @RequiredArgsConstructor
-public class DonghoChiTietController {
+public class DongHoChiTietController {
     @Autowired
     private DongHoChiTietService dongHoChiTietService;
 
